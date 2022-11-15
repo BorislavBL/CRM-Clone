@@ -1,25 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom"
 
-function App() {
+import Dashboard from "./pages/Dashboard/Dashboard"
+import Ticket from './pages/Ticket/Ticket'
+import Nav from './components/Nav/Nav';
+import CategoriesContext from './Context/context';
+import { useState } from 'react';
+
+const App = () => {
+  const [categories, setCategories] = useState(null)
+  const value = { categories, setCategories }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CategoriesContext.Provider value={value}>
+        <BrowserRouter>
+          <Nav />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/ticket" element={<Ticket />} />
+            <Route path="/ticket/:id" element={<Ticket editMode={true} />} />
+          </Routes>
+        </BrowserRouter>
+      </CategoriesContext.Provider>
     </div>
-  );
+  )
 }
 
 export default App;
